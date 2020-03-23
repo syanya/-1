@@ -1,0 +1,128 @@
+﻿@{
+    ViewBag.Title = "University visitors";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="~/Scripts/angular.min.js"></script>
+<script>
+    var visitorsApp = angular.module('visitorsApp', []);;
+</script>
+<script src="~/Scripts/visitorsController.js"></script>
+
+
+
+<div class="main-table ng-cloak" ng-app="visitorsApp" ng-controller="visitorsController">
+    <div id="error-div" ng-show="showError" ng-bind="errorMessage"></div>
+    <div>
+        <div ng-show="showTable">
+            <div>
+                <table class="table table-fixed">
+                    <thead>
+                    <tr>
+                        <th style="width: 20%">Id</th>
+                        <th style="width: 20%">First Name</th>
+                        <th style="width: 20%">Last Name</th>
+                        <th style="width: 20%">Active To</th>
+                        <th style="width: 20%">Phone numbers</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div id="table" class="panel panel-default" data-ng-init="GetData()">
+                <table class="table table-fixed">
+                    <tbody>
+                    <tr ng-repeat="info in data">
+                        <td ng-class="{common: info == selectedObject}" ng-click="openDetails(info)" style="width: 20%; cursor: pointer;">
+                            {{info.Id}}
+                        </td>
+                        <td style="width: 20%">
+                            {{info.FirstName}}
+                        </td>
+                        <td style="width: 20%">
+                            {{info.LastName}}
+                        </td>
+                        <td style="width: 20%">
+                            {{info.ActiveTo}}
+                        </td>
+                        <td>
+                            <span ng-repeat="phone in info.PhoneNumbers">
+                                {{phone}}<span ng-show="!$last">,</span>
+                            </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br/>
+        <div ng-show="showAddButton">
+            <button type="button" id="addnew" class="btn btn-primary" ng-click="addNew()">Add New</button>
+        </div>
+        <div ng-show="showAddNew">
+            <br />
+            <div>
+                <select class="form-control" ng-model="persontype" ng-init="persontype='Student'">
+                    <option value="{{type.value}}" ng-repeat="type in persontypeEnum">
+                        {{type.value}}
+                    </option>
+                </select>
+                <br />
+            </div>
+            <div class="block">
+                <div class="param-name">First Name</div>
+                <div class="contentwrapper">
+                    <input type="text" name="firstname" ng-model="firstname" />
+                </div>
+                <br />
+            </div>
+            <div class="block">
+                <div class="param-name">Last Name</div>
+                <div class="contentwrapper">
+                    <input type="text" name="lastname" ng-model="lastname" />
+                </div>
+                <br />
+            </div>
+            <div>
+                <div class="param-name">Phone Numbers</div>
+                <div>
+                    <input type="tel" ng-model="phonenumbers" placeholder="093000000,0931111111" />
+                </div>
+                <br />
+            </div>
+            <div class="block" ng-show="persontype === 'Student' || persontype === 'Entrant'? true : false">
+                <div class="param-name">Faculties</div>
+                <div class="contentwrapper">
+                    <input type="text" name="faculties" ng-model="faculties" placeholder="FC1,FC2" />
+                </div>
+                <br />
+            </div>
+            <div class="block" ng-show="persontype === 'Student'? true : false">
+                <div class="param-name">Group</div>
+                <div class="contentwrapper">
+                    <input type="text" name="group" ng-model="group" />
+                </div>
+                <br />
+            </div>
+            <div class="block" ng-show="persontype === 'Employee'? true : false">
+                <div class="param-name">Сathedra</div>
+                <div class="contentwrapper">
+                    <input type="text" name="cathedra" ng-model="cathedra" />
+                </div>
+                <br />
+            </div>
+            <div class="block" ng-show="persontype === 'Guest'? true : false">
+                <div class="param-name">Reason</div>
+                <div class="contentwrapper">
+                    <input type="text" name="reason" ng-model="reason" />
+                </div>
+                <br />
+            </div>
+            <div>
+                <button ng-show="showSaveButton" type="button" id="submit" class="btn btn-primary" ng-click="submit()">Save</button>
+                <button ng-show="showRemoveButton" type="button" id="remove" class="btn btn-primary" ng-click="remove()">Remove</button>
+                <button type="button" id="cancel" class="btn btn-primary" ng-click="cancel()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
